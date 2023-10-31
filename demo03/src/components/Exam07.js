@@ -34,7 +34,7 @@ const Exam07 = () => {
             memberPw: pwMatch,
             memberPwRe: pwReMatch
         });
-    }
+    };
 
 
     //useEffect(checkMember, [member]);
