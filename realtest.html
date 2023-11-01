@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>통합구현 시험</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.2/sandstone/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<style>
+    
+    .food-img {
+        width: 100% !important;
+        opacity: 0.5;
+        transition: opacity 0.1s;
+    }
+    .food-img:hover {
+        opacity: 1;
+    }
+    .main-img {
+        width: 30% !important;
+    }
+    .active {
+        opacity: 1;
+    }
+    </style>
+
+<body>
+    <div class="container mt-4">
+        <div class="row mt-4">
+            <div class="col p-4 text-center">
+                <img class="main-img" src="./images/qs.png">
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-1 col-2 p-3">
+                <img class="food-img" src="./images/sushi.png" onclick="showImage(this, './images/sushi.png')">
+            </div>
+            <div class="col-md-1 col-2 p-3">
+                <img class="food-img" src="./images/ddukboki.png" onclick="showImage(this, './images/ddukboki.png')">
+            </div>
+            <div class="col-md-1 col-2 p-3">
+                <img class="food-img" src="./images/burger.png" onclick="showImage(this, './images/burger.png')">
+            </div>
+            <div class="col-md-1 col-2 p-3">
+                <img class="food-img" src="./images/chineseNoodle.png" onclick="showImage(this, './images/chineseNoodle.png')">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showImage(clickedImg, imageSrc) {
+            const mainImg = document.querySelector('.main-img');
+            mainImg.src = imageSrc;
+
+          
+            const foodImages = document.querySelectorAll('.food-img');
+            foodImages.forEach((img) => img.classList.remove('active'));
+
+            clickedImg.classList.add('active');
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
