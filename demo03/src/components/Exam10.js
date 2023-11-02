@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Modal } from "bootstrap/dist/js/bootstrap.esm";
 
 const Exam10 = () => {
@@ -21,6 +21,11 @@ const Exam10 = () => {
         itemPrice: "",
         itemType: ""
     });
+
+    //useRef : 특정 대상을 참조할 수 있는 훅
+    //- const 이름 = useRef(초기값);
+    //- 태그에 ref라는 속성으로 이름을 지정해두면 언제든지 불러서 사용할 수 있다
+    const bsModal = useRef();
 
     const changeData = e => {
         const newData = {
@@ -138,58 +143,63 @@ const Exam10 = () => {
         setBackup(newBackup);
     };
 
-        //항목 추가
-        //- data에 들어있는 객체를 복사해서 items에 추가
-        //- data는 깨끗하게 정리
-        const addItem =()=>{
+    //항목 추가
+    //- data에 들어있는 객체를 복사해서 items에 추가
+    //- data는 깨끗하게 정리
+    const addItem = () => {
 
-            const itemNo = items.length==0? 1 : items[items.length-1].itemNo+1;
+        const itemNo = items.length == 0 ? 1 : items[items.length - 1].itemNo + 1;
 
-            //아이템 추가
-            // const newItems = items.concat({...data});
-            const newItems = [
-                ...items,
-                {
-                    ...data,
-                    edit:false,
-                itemNo : itemNo
+        //아이템 추가
+        // const newItems = items.concat({...data});
+        const newItems = [
+            ...items,
+            {
+                ...data,
+                edit: false,
+                itemNo: itemNo
             }
         ];
-            setItems(newItems);
+        setItems(newItems);
 
-            //백업 추가
-            const newBackup = [
-                ...backup,
-                {
-                    ...data,
-                    edit:false,
-                itemNo : itemNo
+        //백업 추가
+        const newBackup = [
+            ...backup,
+            {
+                ...data,
+                edit: false,
+                itemNo: itemNo
             }
         ];
-            setBackup(newBackup);
+        setBackup(newBackup);
 
-            //입력창 초기화
-            setData({
-                itemName: "",
-                itemPrice: "",
-                itemType: ""
-            });
-            //모달 닫기
-            closeModal();
-        };
-        
+        //모달 닫기
+        closeModal();
+    };
+
+    const cancelAddItem = () => {
+        //입력창 초기화
+        setData({
+            itemName: "",
+            itemPrice: "",
+            itemType: ""
+        });
+        closeModal();
+    }
 
 
-        //모달 여는 함수
-        const openModal = () =>{
-            var modal = new Modal(document.querySelector("#exampleModal"));
-            modal.show();
-        };
-        //모달 닫는 함수
-        const closeModal=()=>{
-            var modal = Modal.getInstance(document.querySelector("#exampleModal"));
-            modal.hide();
-        }
+    //모달 여는 함수
+    const openModal = () => {
+        // var modal = new Modal(document.querySelector("#exampleModal"));//VanillaJS style
+        var modal = new Modal(bsModal.current);//React style
+        modal.show();
+    };
+    //모달 닫는 함수
+    const closeModal = () => {
+        // var modal = Modal.getInstance(document.querySelector("#exampleModal"));//VanillaJS style
+        var modal = Modal.getInstance(bsModal.current);//React style
+        modal.hide();
+    }
     return (
         <div className="container-fluid">
             <div className="row">
@@ -199,15 +209,15 @@ const Exam10 = () => {
                     </div>
                     <div className="row mt-4">
                         <div className="col">
-                            <button type="button" className="btn btn-primary" 
-                            onClick={openModal}>
+                            <button type="button" className="btn btn-primary"
+                                onClick={openModal}>
                                 신규등록
                             </button>
                         </div>
                     </div>
 
 
-                   
+
                     <div className="row mt-4">
                         <table className="table table-hover">
                             <thead>
@@ -263,31 +273,53 @@ const Exam10 = () => {
                     </div>
                 </div>
             </div>
-            
-{/* // Modal */}
-<div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div className="modal-dialog" role="document">
-    <div className="modal-content">
-      <div className="modal-header">
-        <h5 className="modal-title" id="exampleModalLabel">등록하기</h5>
-        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div className="modal-body">
-      <input name="itemName" value={data.itemName} onChange={changeData} />
-                            <input name="itemPrice" value={data.itemPrice} onChange={changeData} />
-                            <input name="itemType" value={data.itemType} onChange={changeData} />
+
+            {/* // Modal */}
+            <div className="modal fade" ref={bsModal} id="exampleModal"
+                data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">등록하기</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="row">
+                                <div className="col">
+                                    <label className="form-label">상품명</label>
+                                    <input name="itemName" value={data.itemName} onChange={changeData} className="form-control" />
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col">
+                                    <label className="form-label">상품가격</label>
+                                    <input name="itemPrice" value={data.itemPrice} onChange={changeData} className="form-control" />
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col">
+                                    <label className="form-label">상품분류</label>
+                                    <input name="itemType" value={data.itemType} onChange={changeData} className="form-control" />
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <div className="modal-footer">
+                            {/* 자동으로 닫히게 하는 버튼 */}
+                            {/* <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">닫기</button> */}
+
+                            {/* 수동으로 원하는 로직을 추가하여 닫히게 하는 버튼 */}
+                            <button type="button" className="btn btn-secondary" onClick={cancelAddItem}>취소</button>
                             <button type="button" className="btn btn-primary"
                                 onClick={addItem}>추가</button>
-      </div>
-      <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" className="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     );
