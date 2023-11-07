@@ -2,9 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 //- node_modules에 설치한 요소들은 바로 이름을 사용하여 접근 가능
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 //이곳에 bootwatch css파일을 불러오는 구문을 작성
-import 'bootswatch/dist/cosmo/bootstrap.min.css';
+import "bootswatch/dist/cosmo/bootstrap.min.css";
+import "bootstrap";
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
